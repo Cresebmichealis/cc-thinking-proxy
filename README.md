@@ -215,7 +215,7 @@ pause
 
 ## 已知限制
 
-- **方案B的重大缺陷：** 代理会导致 Claude Code 的 auto mode classifier 不可用。Classifier 负责判断工具调用是否安全——挂了之后所有写入操作（Write、Edit、Bash写文件、PowerShell写文件）都会被拦截，Claude 几乎无法正常工作。需要手动切换到 `acceptEdits` 模式才能绕过，但会失去自动安全检查。**因此强烈建议用方案A。**
+- **方案B的classifier问题（已修复）：** 旧版代理是单线程的，SSE流占住线程时classifier请求会排队超时，导致auto mode报"模型不可用"、所有写入被拦。已改用 `ThreadingHTTPServer` 支持并发，修复此问题。如果仍遇到classifier不可用，可临时切 `acceptEdits` 模式绕过。**方案A仍然是最简单的选择。**
 - `showThinkingSummaries` 如果对你的账户类型生效，不需要代理。实测Pro订阅可用（2026年8月）。
 
 ## 相关链接
