@@ -7,6 +7,7 @@ import http.server
 import http.client
 import json
 import ssl
+from socketserver import ThreadingMixIn
 
 LISTEN_PORT = 8099
 TARGET_HOST = "api.anthropic.com"
@@ -117,8 +118,12 @@ class Handler(http.server.BaseHTTPRequestHandler):
         pass
 
 
+class ThreadingHTTPServer(ThreadingMixIn, http.server.HTTPServer):
+    daemon_threads = True
+
+
 def main():
-    srv = http.server.HTTPServer(('127.0.0.1', LISTEN_PORT), Handler)
+    srv = ThreadingHTTPServer(('127.0.0.1', LISTEN_PORT), Handler)
     print("=" * 55)
     print("  SSE Proxy v2")
     print("=" * 55)
