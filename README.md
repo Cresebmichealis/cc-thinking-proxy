@@ -215,9 +215,8 @@ pause
 
 ## 已知限制
 
-- Subscription用户和API key用户在服务端行为不同。实测subscription下可看到thinking内容（2026年8月），但不保证所有情况生效。
-- `showThinkingSummaries` 如果对你的账户类型生效，不需要代理。
-- 代理运行时auto mode classifier可能间歇不可用（不影响核心功能，只影响自动权限判断）。
+- **方案B的重大缺陷：** 代理会导致 Claude Code 的 auto mode classifier 不可用。Classifier 负责判断工具调用是否安全——挂了之后所有写入操作（Write、Edit、Bash写文件、PowerShell写文件）都会被拦截，Claude 几乎无法正常工作。需要手动切换到 `acceptEdits` 模式才能绕过，但会失去自动安全检查。**因此强烈建议用方案A。**
+- `showThinkingSummaries` 如果对你的账户类型生效，不需要代理。实测Pro订阅可用（2026年8月）。
 
 ## 相关链接
 
